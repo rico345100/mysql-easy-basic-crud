@@ -37,7 +37,17 @@ dbPool.get()
 ```
 
 
+## Updates
+### 1.0.1
+- DBPool.close is now returns Promise object.
+
+### 1.0.2
+- get method now supports ordering
+
+
 ## API
+Every API function returns Promise object.
+
 ### constructor DBPool(object dbConfig)
 Create new DBPool instance. Possible options are [check node-mysql](https://github.com/mysqljs/mysql#pooling-connections). It uses mysql2 module internally.
 
@@ -67,6 +77,7 @@ Count how many rows are in specified conditions. This method is useful for imple
 Get matched row(s). Available options are:
 - number page: Page number
 - number pagePer: Number of how many records in one page.
+- *New 1.0.2* object order: Set ordering fields. 1 for Descending(DESC), -1 for Ascending(ASC).
 
 ### DBPoolInstance.create(object data, object options)
 Create new record.
@@ -110,6 +121,22 @@ dbPool.get()
 .then((conn) => {
 	return conn.table('Users').get({
 		name: '.modernator'
+	});
+})
+.then((rows) => {
+	console.log(rows);
+});
+```
+
+### Get rows with ordering by ID
+
+```javascript
+dbPool.get()
+.then((conn) => {
+	return conn.table('Users').get({}, {
+		order: {
+			id: 1	// DESC
+		}
 	});
 })
 .then((rows) => {

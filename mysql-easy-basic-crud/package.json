@@ -1,6 +1,6 @@
 {
   "name": "mysql-easy-basic-crud",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "mysql-easy-basic-crud is simple crud implemenation with node.js mysql driver.",
   "main": "index.js",
   "scripts": {

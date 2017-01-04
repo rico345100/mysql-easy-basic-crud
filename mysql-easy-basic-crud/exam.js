@@ -14,6 +14,7 @@ dbPool.create();
 
 let pool = null;
 
+// order by id
 dbPool.get()
 .then((ins) => {
 	pool = ins;
@@ -43,7 +44,11 @@ dbPool.get()
 	// });
 })
 .then(() => {
-	return pool.table('Users').get();
+	return pool.table('Users').get({}, {
+		order: {
+			id: 1	// order by id DESC
+		}
+	});
 })
 .then((rows) => {
 	console.log(rows);

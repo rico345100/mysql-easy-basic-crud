@@ -34,7 +34,15 @@ DBPool.prototype.get = function() {
 	});
 };
 DBPool.prototype.end = function() {
-	this.pool.end();
+	return new Promise((resolve, reject) => {
+		this.pool.end((err) => {
+			if(err) {
+				return reject(new Error(err));
+			}
+
+			resolve();
+		});
+	});
 };
 
 function DBPoolInstance(conn) {
@@ -101,6 +109,16 @@ DBPoolInstance.prototype.get = function(where, options) {
 
 		if(where && typeof where === 'object' && Object.keys(where).length > 0) {
 			queryStr += convertObjectToWhereClause(where, params);
+		}
+		if(options.order) {
+			let orderList = [];
+
+			for(var field in options.order) {
+				orderList.push(field + ' ' + (options.order[field] === 1 ? 'DESC' : 'ASC'));
+			}
+
+			let orderQuery = 'ORDER BY ' + (orderList.join(', '));
+			queryStr += orderQuery;
 		}
 		
 		if(options.page && options.pagePer) {
